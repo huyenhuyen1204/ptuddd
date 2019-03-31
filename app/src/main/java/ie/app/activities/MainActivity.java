@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ie.app.models.Donation;
 
@@ -121,12 +122,35 @@ public class MainActivity extends Base {
             if (!text.equals(""))
                 donatedAmount = Integer.parseInt(text);
         }
+//
+//        if (!targetAchieved)
+//        {
+//            totalDonated  = totalDonated + donatedAmount;
+//            targetAchieved = totalDonated >= 10000;
+//            progressBar.setProgress(totalDonated);
+//            String totalDonatedStr = "$" + totalDonated;
+//            amountTotal.setText(totalDonatedStr);
+//        }
+//        else
+//        {
+//            Toast toast = Toast.makeText(this, "Target Exceeded!", Toast.LENGTH_SHORT);
+//            toast.show();
+//        }
+        if (donatedAmount == 0)
+        {
+            String text = amountText.getText().toString();
+            if (!text.equals(""))
+                donatedAmount = Integer.parseInt(text);
+        }
         if (donatedAmount > 0)
         {
             newDonation(new Donation(donatedAmount, method));
-            progressBar.setProgress(totalDonated);
+            totalDonated  = totalDonated + donatedAmount;
+            progressBar.setProgress(10);
             String totalDonatedStr = "$" + totalDonated;
             amountTotal.setText(totalDonatedStr);
+//            amountText.setText(donatedAmount);
+
         }
     }
 
