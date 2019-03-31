@@ -46,7 +46,7 @@ public class Base extends AppCompatActivity {
             report.setEnabled(false);
         else
             report.setEnabled(true);
-        if(this instanceof AppCompatActivity){
+        if(this instanceof MainActivity){
             donate.setVisible(false);
             if(!donations.isEmpty())
                 report.setVisible(true);

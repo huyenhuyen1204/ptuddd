@@ -149,7 +149,6 @@ public class MainActivity extends Base {
             progressBar.setProgress(10);
             String totalDonatedStr = "$" + totalDonated;
             amountTotal.setText(totalDonatedStr);
-//            amountText.setText(donatedAmount);
 
         }
     }

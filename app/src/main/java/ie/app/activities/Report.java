@@ -14,7 +14,7 @@ import java.util.List;
 
 import ie.app.models.Donation;
 
-public class Report extends AppCompatActivity {
+public class Report extends Base {
 
     ListView listView;
 
@@ -28,8 +28,6 @@ public class Report extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
         listView = (ListView) findViewById(R.id.reportList);
-        List<Donation> donations = new ArrayList<>();
-
         DonationAdapter adapter = new DonationAdapter(this, donations);
         listView.setAdapter(adapter);
     }
