@@ -31,30 +31,5 @@ public class Report extends Base {
         DonationAdapter adapter = new DonationAdapter(this, donations);
         listView.setAdapter(adapter);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.menuReport :
-                startActivity(new Intent(this, Report.class));
-                break;
-            case R.id.action_settings:
-                return true;
-            case R.id.menuDonate:
-                startActivity(new Intent(this, MainActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
