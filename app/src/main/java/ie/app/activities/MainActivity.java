@@ -123,5 +123,12 @@ public class MainActivity extends Base {
 
         }
     }
-
+    @Override
+    public void reset(MenuItem item) {
+        progressBar.setProgress(0);
+        amountPicker.setValue(0);
+        paymentMethod.clearCheck();
+        amountText.setText(null);
+        amountTotal.setText("$0");
+    }
 }
