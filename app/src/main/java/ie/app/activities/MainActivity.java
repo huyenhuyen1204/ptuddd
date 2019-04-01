@@ -27,8 +27,6 @@ public class MainActivity extends Base {
     private EditText amountText;
     private TextView amountTotal;
 
-    private int             totalDonated = 0;
-    private boolean         targetAchieved = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +94,6 @@ public class MainActivity extends Base {
         String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ?
                 "PayPal" : "Direct";
         int donatedAmount = amountPicker.getValue();
-        if (donatedAmount == 0)
-        {
-            String text = amountText.getText().toString();
-            if (!text.equals(""))
-                donatedAmount = Integer.parseInt(text);
-        }
 //
 //        if (!targetAchieved)
 //        {
@@ -125,8 +117,7 @@ public class MainActivity extends Base {
         if (donatedAmount > 0)
         {
             newDonation(new Donation(donatedAmount, method));
-            totalDonated  = totalDonated + donatedAmount;
-            progressBar.setProgress(10);
+            progressBar.setProgress(totalDonated);
             String totalDonatedStr = "$" + totalDonated;
             amountTotal.setText(totalDonatedStr);
 
