@@ -116,15 +116,16 @@ public class MainActivity extends Base {
         }
         if (donatedAmount > 0)
         {
-            newDonation(new Donation(donatedAmount, method));
-            progressBar.setProgress(totalDonated);
-            String totalDonatedStr = "$" + totalDonated;
+            app.newDonation(new Donation(donatedAmount, method));
+            progressBar.setProgress(app.totalDonated);
+            String totalDonatedStr = "$" + app.totalDonated;
             amountTotal.setText(totalDonatedStr);
 
         }
     }
     @Override
     public void reset(MenuItem item) {
+        app.dbManager.reset();
         progressBar.setProgress(0);
         amountPicker.setValue(0);
         paymentMethod.clearCheck();

@@ -9,4 +9,14 @@ public class Donation {
         this.amount = amount;
         this.method = method;
     }
+
+    public Donation ()
+    {
+        this.amount = 0;
+        this.method = "";
+    }
+    public String toString()
+    {
+        return id + ", " + amount + ", " + method;
+    }
 }
