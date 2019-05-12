@@ -72,21 +72,25 @@ public class MainActivity extends Base {
 
 
     public void donateButtonPressed (View view) {
-//        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ? "PayPal" : "Direct";
-//        int donatedAmount = amountPicker.getValue();
-//        if (donatedAmount == 0)
-//        {
-//            String text = amountText.getText().toString();
-//            if (!text.equals(""))
-//                donatedAmount = Integer.parseInt(text);
-//        }
-//        if (donatedAmount > 0)
-//        {
-//            newDonation(new Donation(donatedAmount, method, 0));
-//            progressBar.setProgress(totalDonated);
-//            String totalDonatedStr = "$" + totalDonated;
-//            amountTotal.setText(totalDonatedStr);
-//        }
+        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ? "PayPal" : "Direct";
+        int donatedAmount = amountPicker.getValue();
+        if (donatedAmount == 0)
+        {
+            String text = amountText.getText().toString();
+            if (!text.equals(""))
+                donatedAmount = Integer.parseInt(text);
+        }
+        if (donatedAmount > 0)
+        {
+            Donation _donation =  new Donation(donatedAmount, method, 0);
+            newDonation(_donation);
+            progressBar.setProgress(totalDonated);
+            String totalDonatedStr = "$" + totalDonated;
+            amountTotal.setText(totalDonatedStr);
+            //------add
+            Log.v("donation", String.valueOf(this));
+            new InsertTask(this, _donation ).execute("/donations");
+        }
     }
 
     @Override
@@ -94,6 +98,7 @@ public class MainActivity extends Base {
     {
         totalDonated = 0;
         amountTotal.setText("$" + totalDonated);
+        new ResetTask(this).execute("/donations");
     }
 
     @Override
@@ -153,5 +158,82 @@ public class MainActivity extends Base {
         }
     }
 
+    private class InsertTask extends AsyncTask<Object, Void, String> {
+        protected ProgressDialog dialog;
+        protected Context context;
+        protected Donation donation;
+        public InsertTask(Context context, Donation donation)
+        {
+            this.context = context;
+            this.donation = donation;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialog = new ProgressDialog(context, 1);
+            this.dialog.setMessage("Saving Donation....");
+            this.dialog.show();
+        }
+        @Override
+        protected String doInBackground(Object... params) {
+            String res = null;
+            try {
+                // Add donation into Server
+                DonationApi.insert((String) params[0], this.donation);
+                Log.v("donate", "Donation App Inserting");
+            }
+            catch(Exception e)
+            {
+                Log.v("donate","ERROR : " + e);
+                e.printStackTrace();
+            }
+            return res;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing())
+                dialog.dismiss();
+
+        }
+    }
+
+    private class ResetTask extends AsyncTask<Object, Void, String> {
+        protected ProgressDialog  dialog;
+        protected Context  context;
+        public ResetTask(Context context)
+        {
+            this.context = context;
+        }@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialog = new ProgressDialog(context, 1);
+            this.dialog.setMessage("Deleting Donations....");
+            this.dialog.show();
+        }
+        @Override
+        protected String doInBackground(Object... params) {
+            String res = null;
+            try {
+                res = DonationApi.deleteAll((String)params[0]);
+            }
+            catch(Exception e)
+            {
+                Log.v("donate"," RESET ERROR : " + e);
+                e.printStackTrace();
+            }
+            return res;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            totalDonated = 0;
+            progressBar.setProgress(totalDonated);
+            amountTotal.setText("$" + totalDonated);
+            if (dialog.isShowing())
+                dialog.dismiss();
+        }
+    }
 
 }

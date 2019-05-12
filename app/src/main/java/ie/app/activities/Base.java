@@ -11,8 +11,8 @@ import java.util.List;
 
 import ie.app.models.Donation;
 
-public abstract class Base extends AppCompatActivity {
-        public final int target = 1000;
+public class Base extends AppCompatActivity {
+    public final int target = 10000;
     public int totalDonated = 0;
     public static List<Donation> donations = new ArrayList<>();
 

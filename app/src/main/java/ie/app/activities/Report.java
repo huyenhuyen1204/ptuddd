@@ -28,7 +28,7 @@ import java.util.List;
 import ie.app.api.DonationApi;
 import ie.app.models.Donation;
 
-public abstract class Report extends Base implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class Report extends Base implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     ListView listView;
     SwipeRefreshLayout mSwipeRefreshLayout;
