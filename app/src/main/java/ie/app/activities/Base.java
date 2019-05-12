@@ -62,6 +62,8 @@ public class Base extends AppCompatActivity {
     public void donate(MenuItem item) {
         startActivity(new Intent(this, MainActivity.class));
     }
-    public void reset(MenuItem item) {}
+    public void reset(MenuItem item) {
+
+    }
 }
 

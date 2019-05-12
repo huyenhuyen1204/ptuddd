@@ -1,7 +1,9 @@
 package ie.app.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -96,9 +98,23 @@ public class MainActivity extends Base {
     @Override
     public void reset(MenuItem item)
     {
-        totalDonated = 0;
-        amountTotal.setText("$" + totalDonated);
-        new ResetTask(this).execute("/donations");
+        //------------Box thong bao----------
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete ALL Donation?");
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setMessage("Are you sure you want to Delete ALL the Donations ?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new ResetTask(MainActivity.this).execute("/donations");
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -216,7 +232,9 @@ public class MainActivity extends Base {
         protected String doInBackground(Object... params) {
             String res = null;
             try {
+                Log.v("donation", "into doInBackground");
                 res = DonationApi.deleteAll((String)params[0]);
+
             }
             catch(Exception e)
             {

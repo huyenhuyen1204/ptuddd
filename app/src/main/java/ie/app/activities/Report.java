@@ -89,7 +89,7 @@ public class Report extends Base implements View.OnClickListener, AdapterView.On
     }
 
 
-    private class GetAllTask extends AsyncTask<String, Void, List<Donation>> implements AdapterView.OnItemClickListener {
+    public class GetAllTask extends AsyncTask<String, Void, List<Donation>> implements AdapterView.OnItemClickListener {
         protected ProgressDialog dialog;
         protected Context context;
 
@@ -133,6 +133,26 @@ public class Report extends Base implements View.OnClickListener, AdapterView.On
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         }
+    }
+    @Override
+    public void reset(MenuItem item) {
+        //------------Box thong bao----------
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete ALL Donation?");
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setMessage("Are you sure you want to Delete ALL the Donations ?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                new ResetTask(Report.this).execute("/donations");
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private class GetTask extends AsyncTask<String, Void, Donation> {
@@ -235,6 +255,43 @@ public class Report extends Base implements View.OnClickListener, AdapterView.On
         }@Override
         public int getCount() {
             return donations.size();
+        }
+    }
+
+    private class ResetTask extends AsyncTask<Object, Void, String> {
+        protected ProgressDialog  dialog;
+        protected Context  context;
+        public ResetTask(Context context)
+        {
+            this.context = context;
+        }@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialog = new ProgressDialog(context, 1);
+            this.dialog.setMessage("Deleting Donations....");
+            this.dialog.show();
+        }
+        @Override
+        protected String doInBackground(Object... params) {
+            String res = null;
+            try {
+                Log.v("donation", "into doInBackground");
+                res = DonationApi.deleteAll((String)params[0]);
+
+            }
+            catch(Exception e)
+            {
+                Log.v("donate"," RESET ERROR : " + e);
+                e.printStackTrace();
+            }
+            return res;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            new GetAllTask(Report.this).execute("/donations");
+            if (dialog.isShowing())
+                dialog.dismiss();
         }
     }
 
