@@ -71,50 +71,9 @@ public class MainActivity extends Base {
     }
 
 
-//    public void donateButtonPressed (View view)
-//    {
-////        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ? "PayPal" : "Direct";
-////
-////        int donatedAmount =  amountPicker.getValue();
-////        if (donatedAmount == 0)
-////        {
-////            String text = amountText.getText().toString();
-////            if (!text.equals(""))
-////                donatedAmount = Integer.parseInt(text);
-////        }
-////
-////        if (!targetAchieved)
-////        {
-////            totalDonated  = totalDonated + donatedAmount;
-////            targetAchieved = totalDonated >= 10000;
-////            progressBar.setProgress(totalDonated);
-////            String totalDonatedStr = "$" + totalDonated;
-////            amountTotal.setText(totalDonatedStr);
-////        }
-////        else
-////        {
-////            Toast toast = Toast.makeText(this, "Target Exceeded!", Toast.LENGTH_SHORT);
-////            toast.show();
-////        }
-////
-////        Log.v("Donate", amountPicker.getValue() + " donated by " +  method + "\nCurrent total " + totalDonated);
-//        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ?
-//                "PayPal" : "Direct";
+    public void donateButtonPressed (View view) {
+//        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ? "PayPal" : "Direct";
 //        int donatedAmount = amountPicker.getValue();
-////
-////        if (!targetAchieved)
-////        {
-////            totalDonated  = totalDonated + donatedAmount;
-////            targetAchieved = totalDonated >= 10000;
-////            progressBar.setProgress(totalDonated);
-////            String totalDonatedStr = "$" + totalDonated;
-////            amountTotal.setText(totalDonatedStr);
-////        }
-////        else
-////        {
-////            Toast toast = Toast.makeText(this, "Target Exceeded!", Toast.LENGTH_SHORT);
-////            toast.show();
-////        }
 //        if (donatedAmount == 0)
 //        {
 //            String text = amountText.getText().toString();
@@ -123,19 +82,27 @@ public class MainActivity extends Base {
 //        }
 //        if (donatedAmount > 0)
 //        {
-//            newDonation(new Donation(donatedAmount, method));
+//            newDonation(new Donation(donatedAmount, method, 0));
 //            progressBar.setProgress(totalDonated);
 //            String totalDonatedStr = "$" + totalDonated;
 //            amountTotal.setText(totalDonatedStr);
-//
 //        }
-//    }
+    }
+
+    @Override
+    public void reset(MenuItem item)
+    {
+        totalDonated = 0;
+        amountTotal.setText("$" + totalDonated);
+    }
 
     @Override
     public void onResume() {
         super.onResume();
         new GetAllTask(this).execute("/donations");
     }
+
+
     private class GetAllTask extends AsyncTask<String, Void, List<Donation>> {
 
         protected ProgressDialog dialog;
@@ -170,7 +137,7 @@ public class MainActivity extends Base {
         @Override
         protected void onPostExecute(List<Donation> result) {
             super.onPostExecute(result);
-//use result to calculate the totalDonated amount here
+        //use result to calculate the totalDonated amount here
             donations = result;
             int total = 0;
             for (int i = 0; i < result.size(); i++){
